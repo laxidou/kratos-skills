@@ -32,11 +32,14 @@ Install kratos-skills from https://github.com/lwx-cloud/kratos-skills
 ### Or manually
 
 ```bash
-# Project-level
+# Claude Code, project-level
 git clone https://github.com/lwx-cloud/kratos-skills.git .claude/skills/kratos-skills
 
-# Personal-level
+# Claude Code, personal-level
 git clone https://github.com/lwx-cloud/kratos-skills.git ~/.claude/skills/kratos-skills
+
+# Codex, personal-level
+git clone https://github.com/lwx-cloud/kratos-skills.git ~/.codex/skills/kratos-skills
 ```
 
 ## Overview
