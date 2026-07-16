@@ -2,7 +2,7 @@
 
 Comprehensive knowledge base for go-kratos microservices framework.
 
-[![GitHub](https://img.shields.io/github/license/lwx-cloud/kratos-skills)](LICENSE)
+[![GitHub](https://img.shields.io/github/license/laxidou/kratos-skills)](LICENSE)
 [![Kratos](https://img.shields.io/badge/kratos-v2.0+-blue.svg)](https://go-kratos.dev/)
 
 [English](README.md) | [简体中文](README_CN.md)
@@ -13,33 +13,63 @@ Comprehensive knowledge base for go-kratos microservices framework.
 
 ## Quick Install
 
-### Via skills CLI (Recommended)
+### From this repository checkout (Recommended for local development)
+
+Run these commands from the repository root:
+
+```bash
+# Confirm you are in the kratos-skills repository
+pwd
+
+# Codex personal skill path
+mkdir -p ~/.codex/skills
+ln -s "$(pwd)" ~/.codex/skills/kratos-skills
+
+# Claude Code personal skill path
+mkdir -p ~/.claude/skills
+ln -s "$(pwd)" ~/.claude/skills/kratos-skills
+```
+
+After installation, the skill root should contain:
+
+```text
+~/.codex/skills/kratos-skills/SKILL.md
+~/.codex/skills/kratos-skills/references/
+~/.codex/skills/kratos-skills/best-practices/
+~/.claude/skills/kratos-skills/SKILL.md
+~/.claude/skills/kratos-skills/references/
+~/.claude/skills/kratos-skills/best-practices/
+```
+
+Using a symlink keeps `references/` and `best-practices/` in sync with this checkout while you edit the repository.
+
+### Via skills CLI
 
 ```bash
 # Project-level (recommended)
-npx skills add lwx-cloud/kratos-skills
+npx skills add laxidou/kratos-skills
 
 # Personal-level (all projects)
-npx skills add lwx-cloud/kratos-skills -g
+npx skills add laxidou/kratos-skills -g
 ```
 
 ### Or ask your AI agent
 
 ```
-Install kratos-skills from https://github.com/lwx-cloud/kratos-skills
+Install kratos-skills from https://github.com/laxidou/kratos-skills
 ```
 
-### Or manually
+### Or clone manually
 
 ```bash
 # Claude Code, project-level
-git clone https://github.com/lwx-cloud/kratos-skills.git .claude/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git .claude/skills/kratos-skills
 
 # Claude Code, personal-level
-git clone https://github.com/lwx-cloud/kratos-skills.git ~/.claude/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git ~/.claude/skills/kratos-skills
 
 # Codex, personal-level
-git clone https://github.com/lwx-cloud/kratos-skills.git ~/.codex/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git ~/.codex/skills/kratos-skills
 ```
 
 ## Overview
@@ -193,5 +223,5 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 ---
 
-**Maintained by**: [lwx-cloud](https://github.com/lwx-cloud)
+**Maintained by**: [laxidou](https://github.com/laxidou)
 **Status**: Actively maintained

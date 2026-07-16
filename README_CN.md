@@ -2,7 +2,7 @@
 
 go-kratos 微服务框架综合知识库
 
-[![GitHub](https://img.shields.io/github/license/lwx-cloud/kratos-skills)](LICENSE)
+[![GitHub](https://img.shields.io/github/license/laxidou/kratos-skills)](LICENSE)
 [![Kratos](https://img.shields.io/badge/kratos-v2.0+-blue.svg)](https://go-kratos.dev/)
 
 [English](README.md) | [简体中文](README_CN.md)
@@ -13,33 +13,63 @@ go-kratos 微服务框架综合知识库
 
 ## 快速安装
 
-### 通过 skills CLI（推荐）
+### 从当前仓库 checkout 安装（本地开发推荐）
+
+在本仓库根目录执行：
+
+```bash
+# 确认当前目录是 kratos-skills 仓库
+pwd
+
+# Codex 个人级 skill 路径
+mkdir -p ~/.codex/skills
+ln -s "$(pwd)" ~/.codex/skills/kratos-skills
+
+# Claude Code 个人级 skill 路径
+mkdir -p ~/.claude/skills
+ln -s "$(pwd)" ~/.claude/skills/kratos-skills
+```
+
+安装后，skill 根目录应包含：
+
+```text
+~/.codex/skills/kratos-skills/SKILL.md
+~/.codex/skills/kratos-skills/references/
+~/.codex/skills/kratos-skills/best-practices/
+~/.claude/skills/kratos-skills/SKILL.md
+~/.claude/skills/kratos-skills/references/
+~/.claude/skills/kratos-skills/best-practices/
+```
+
+使用软链可以让 `references/` 和 `best-practices/` 随当前仓库修改实时生效。
+
+### 通过 skills CLI
 
 ```bash
 # 项目级（推荐）
-npx skills add lwx-cloud/kratos-skills
+npx skills add laxidou/kratos-skills
 
 # 个人级（所有项目共享）
-npx skills add lwx-cloud/kratos-skills -g
+npx skills add laxidou/kratos-skills -g
 ```
 
 ### 或让 AI 助手安装
 
 ```
-Install kratos-skills from https://github.com/lwx-cloud/kratos-skills
+Install kratos-skills from https://github.com/laxidou/kratos-skills
 ```
 
-### 或手动安装
+### 或手动 clone 安装
 
 ```bash
 # Claude Code 项目级
-git clone https://github.com/lwx-cloud/kratos-skills.git .claude/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git .claude/skills/kratos-skills
 
 # Claude Code 个人级
-git clone https://github.com/lwx-cloud/kratos-skills.git ~/.claude/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git ~/.claude/skills/kratos-skills
 
 # Codex 个人级
-git clone https://github.com/lwx-cloud/kratos-skills.git ~/.codex/skills/kratos-skills
+git clone https://github.com/laxidou/kratos-skills.git ~/.codex/skills/kratos-skills
 ```
 
 ## 概述
@@ -193,5 +223,5 @@ kratos-skills/
 
 ---
 
-**维护者**：[lwx-cloud](https://github.com/lwx-cloud)
+**维护者**：[laxidou](https://github.com/laxidou)
 **状态**：积极维护中
