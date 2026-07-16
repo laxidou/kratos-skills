@@ -1,222 +1,102 @@
 ---
 name: kratos-skills
-description: |
-  Comprehensive knowledge base for go-kratos microservices framework.
-
-  **Use this skill when:**
-  - Building REST/gRPC APIs with kratos (Service → Biz → Data layered architecture)
-  - Creating microservices with DDD and Clean Architecture patterns
-  - Implementing dependency injection with Wire
-  - Configuring service discovery, load balancing, and resilience patterns
-  - Troubleshooting kratos issues or understanding framework conventions
-  - Generating production-ready microservices code with Protobuf
-
-  **Features:**
-  - Complete pattern guides with ✅ correct and ❌ incorrect examples
-  - DDD/Clean Architecture enforcement
-  - Production best practices
-  - Common pitfall solutions
-license: MIT
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
+description: Build, review, debug, and modernize Go microservices based on go-kratos v2. Use when Codex works on Kratos projects involving Protobuf HTTP/gRPC APIs, Service-Biz-Data layering, Wire dependency injection, configuration, middleware, validation, structured errors, registry and discovery, resilience, observability, Ent, CLI or code generation, production hardening, or Kratos-specific troubleshooting.
 ---
 
-# Kratos Skills for AI Agents
+# Go-Kratos Engineering
 
-This skill provides comprehensive go-kratos microservices framework knowledge, optimized for AI agents helping developers build production-ready services.
+Use the repository as the source of truth, then apply the Kratos patterns in this skill selectively.
 
-## 🎯 When to Use This Skill
+## Work From the Codebase
 
-Invoke this skill when working with go-kratos:
-- **Creating services**: REST APIs, gRPC services, or microservices architectures
-- **Layered architecture**: Implementing Service → Biz → Data layers with DDD
-- **Dependency injection**: Using Wire for compile-time DI
-- **Production hardening**: Circuit breakers, rate limiting, middleware
-- **Debugging**: Understanding errors, fixing configuration, or resolving issues
-- **Learning**: Understanding kratos patterns and best practices
+1. Inspect `go.mod`, `Makefile`, `buf.yaml`, `buf.gen.yaml`, API protos, `cmd/`, and `internal/` before proposing changes.
+2. Identify the exact Kratos, Go, Protobuf, Wire, validation, and contrib package versions already in use.
+3. Follow the project's existing generation commands, provider-set structure, naming, and error conventions.
+4. Load only the reference files required for the current task.
+5. Implement the smallest coherent change across API, service, biz, data, configuration, and wiring boundaries.
+6. Regenerate derived code and run focused tests; broaden verification when shared contracts or infrastructure change.
 
-## 📚 Knowledge Structure
+Do not copy commands or APIs from a reference blindly. Reconcile every example with the versions and conventions found in the target repository.
 
-**Load specific guides as needed** rather than reading everything at once:
+## Preserve Kratos Boundaries
 
-### Quick Start
-**Link**: [Official Kratos Documentation](https://go-kratos.dev/docs/getting-started/start)
-**Contains**: Installation, project creation, basic commands, hello-world examples
+- Keep transport adaptation in `internal/service`; translate generated request and response types there.
+- Keep business rules and repository interfaces in `internal/biz`.
+- Keep persistence and external-system implementations in `internal/data`.
+- Compose dependencies with Wire provider sets; avoid globals and service locators.
+- Define public APIs, validation rules, and structured error contracts in Protobuf when the project does so already.
+- Propagate `context.Context`, deadlines, metadata, and tracing through every layer and outbound call.
+- Treat generated `.pb.go`, HTTP, gRPC, error, validation, and `wire_gen.go` files as derived output. Change their source definitions instead of editing generated files.
 
-### Pattern Guides
+Adapt these defaults when the repository intentionally uses a different architecture. Preserve local consistency unless the user explicitly requests a migration.
 
-#### API & Transport
-| File | When to Load |
-|------|-------------|
-| [references/api-patterns.md](references/api-patterns.md) | Defining Protobuf APIs, generating HTTP/gRPC code |
-| [references/transport-patterns.md](references/transport-patterns.md) | HTTP/gRPC server/client configuration |
-| [references/encoding-patterns.md](references/encoding-patterns.md) | Custom serialization, content negotiation |
-| [references/openapi-guide.md](references/openapi-guide.md) | OpenAPI/Swagger documentation generation |
+## Route to References
 
-#### Architecture & Design
-| File | When to Load |
-|------|-------------|
-| [references/architecture-patterns.md](references/architecture-patterns.md) | DDD layers, repository pattern, Wire DI |
-| [references/error-patterns.md](references/error-patterns.md) | Error definition, assertions, proto errors |
-| [references/middleware-patterns.md](references/middleware-patterns.md) | Custom middleware, request filtering |
+Select the narrowest useful row. Read each selected file completely before implementing its patterns.
 
-#### Infrastructure
-| File | When to Load |
-|------|-------------|
-| [references/config-patterns.md](references/config-patterns.md) | Configuration loading, hot reload, config centers |
-| [references/registry-patterns.md](references/registry-patterns.md) | Service discovery (etcd, consul, nacos, k8s) |
-| [references/selector-patterns.md](references/selector-patterns.md) | Load balancing (P2C, WRR, random) |
+| Task | Read |
+| --- | --- |
+| Create or reshape a service, use case, repository, or Wire graph | [references/architecture-patterns.md](references/architecture-patterns.md) |
+| Define Protobuf APIs or HTTP mappings | [references/api-patterns.md](references/api-patterns.md) |
+| Configure HTTP/gRPC servers or clients | [references/transport-patterns.md](references/transport-patterns.md) |
+| Use Kratos CLI or project generators | [references/cli-guide.md](references/cli-guide.md) |
+| Define and propagate structured errors | [references/error-patterns.md](references/error-patterns.md) |
+| Add Protovalidate or migrate validation | [references/validate-patterns.md](references/validate-patterns.md) |
+| Add middleware or reason about middleware order | [references/middleware-patterns.md](references/middleware-patterns.md) |
+| Add JWT authentication or authorization context | [references/auth-patterns.md](references/auth-patterns.md) |
+| Configure files, environment variables, or config centers | [references/config-patterns.md](references/config-patterns.md) |
+| Add registry, discovery, or client-side balancing | [references/registry-patterns.md](references/registry-patterns.md), [references/selector-patterns.md](references/selector-patterns.md) |
+| Add circuit breaking, rate limiting, or panic recovery | [references/circuit-breaker-patterns.md](references/circuit-breaker-patterns.md), [references/ratelimit-patterns.md](references/ratelimit-patterns.md), [references/recovery-patterns.md](references/recovery-patterns.md) |
+| Add logs, metrics, traces, or propagated metadata | [references/logging-patterns.md](references/logging-patterns.md), [references/metrics-patterns.md](references/metrics-patterns.md), [references/tracing-patterns.md](references/tracing-patterns.md), [references/metadata-patterns.md](references/metadata-patterns.md) |
+| Integrate Ent or implement Ent repositories and transactions | [references/ent-patterns.md](references/ent-patterns.md) |
+| Customize serialization or content negotiation | [references/encoding-patterns.md](references/encoding-patterns.md) |
+| Generate or serve OpenAPI documentation | [references/openapi-guide.md](references/openapi-guide.md) |
+| Diagnose installation, generation, Wire, build, runtime, database, or discovery failures | [troubleshooting/common-issues.md](troubleshooting/common-issues.md) plus the relevant topic reference |
+| Perform a broad production-readiness or code-quality review | [best-practices/overview.md](best-practices/overview.md) plus references for the affected subsystems |
+| Configure or invoke this skill from Claude Code | [getting-started/claude-code-guide.md](getting-started/claude-code-guide.md) |
 
-#### Resilience & Reliability
-| File | When to Load |
-|------|-------------|
-| [references/circuit-breaker-patterns.md](references/circuit-breaker-patterns.md) | Fault tolerance, SRE circuit breaker |
-| [references/ratelimit-patterns.md](references/ratelimit-patterns.md) | Token bucket, BBR rate limiting |
-| [references/recovery-patterns.md](references/recovery-patterns.md) | Panic recovery, stack trace logging |
+For broad requests, start with architecture or best practices and add subsystem references only when the code under inspection requires them. Do not load the entire knowledge base at once.
 
-#### Observability
-| File | When to Load |
-|------|-------------|
-| [references/logging-patterns.md](references/logging-patterns.md) | Structured logging, Zap/Logrus adapters |
-| [references/metrics-patterns.md](references/metrics-patterns.md) | Prometheus metrics collection |
-| [references/tracing-patterns.md](references/tracing-patterns.md) | OpenTelemetry, Jaeger/Zipkin tracing |
-| [references/metadata-patterns.md](references/metadata-patterns.md) | Context propagation, trace IDs |
+## Apply Task-Specific Checks
 
-#### Security & Validation
-| File | When to Load |
-|------|-------------|
-| [references/auth-patterns.md](references/auth-patterns.md) | JWT authentication, claims, token generation |
-| [references/validate-patterns.md](references/validate-patterns.md) | Proto field validation, protoc-gen-validate |
+### API and Generation
 
-#### Data & Tools
-| File | When to Load |
-|------|-------------|
-| [references/ent-patterns.md](references/ent-patterns.md) | Ent ORM integration, schema design |
-| [references/cli-guide.md](references/cli-guide.md) | kratos CLI, code generation commands |
+- Confirm `go_package`, package versioning, HTTP annotations, request bodies, path parameters, and generated targets.
+- Preserve backward compatibility unless the user approves a breaking contract change.
+- Use repository-owned Make or Buf targets when available instead of inventing a parallel generation command.
+- Include regenerated outputs only when the repository tracks them.
 
-### Supporting Resources
+### Layered Implementation
 
-| File | When to Load |
-|------|-------------|
-| [best-practices/overview.md](best-practices/overview.md) | Production deployment, code review checklist |
-| [troubleshooting/common-issues.md](troubleshooting/common-issues.md) | Debugging errors, protoc/wire issues |
-| [getting-started/claude-code-guide.md](getting-started/claude-code-guide.md) | Claude Code integration, advanced features |
+- Keep service methods thin and delegate orchestration to use cases.
+- Define repository behavior from business needs, not storage technology.
+- Map storage and transport errors into the project's domain error model at the appropriate boundary.
+- Update Wire providers whenever constructor dependencies or implementations change.
 
-## 🚀 Common Workflows
+### Infrastructure and Reliability
 
-### Creating a New Service
+- Set explicit timeouts for outbound calls and preserve cancellation.
+- Apply middleware on the correct client or server side and verify ordering from actual behavior.
+- Avoid retrying non-idempotent work without an idempotency strategy.
+- Bound retries, rate limits, circuit breakers, connection pools, and queues with observable failure behavior.
+- Avoid logging secrets, credentials, tokens, or full sensitive request payloads.
 
-1. **Create project**: `kratos new <project-name>`
-2. **Define API**: Create `.proto` with google.api.http annotations
-3. **Generate code**: `kratos proto client api/demo/v1/demo.proto`
-4. **Generate service**: `kratos proto server api/demo/v1/demo.proto -t internal/service`
-5. **Implement layers**: Biz logic in `internal/biz/`, data access in `internal/data/`
-6. **Configure Wire**: Update `cmd/server/wire.go` with provider sets
-7. **Run**: `go generate ./... && kratos run`
+### Review and Debugging
 
-**Details**: [references/api-patterns.md](references/api-patterns.md)
+- Reproduce or trace the failing path before changing architecture.
+- Check generated-code drift, missing tools, stale Wire graphs, configuration source precedence, discovery endpoints, and context deadlines.
+- In reviews, prioritize correctness, contract compatibility, layer violations, error handling, cancellation, security, observability, and missing tests.
+- Cite concrete files and lines when reporting findings.
 
-### Implementing Layered Architecture
+## Verify Changes
 
-1. **Define interfaces** in `internal/biz/` (biz layer)
-2. **Implement repositories** in `internal/data/` (data layer)
-3. **Write use cases** in `internal/biz/` (biz layer)
-4. **Implement handlers** in `internal/service/` (service layer)
-5. **Create ProviderSets**: `data.ProviderSet`, `biz.ProviderSet`, `service.ProviderSet`
-6. **Wire together** in `cmd/server/wire.go`
+Prefer commands already defined by the project. A typical verification sequence is:
 
-**Details**: [references/architecture-patterns.md](references/architecture-patterns.md)
+1. Run the relevant Proto, config, error, Ent, or Wire generation target.
+2. Run `gofmt` on handwritten Go files.
+3. Run focused package tests for the changed layers.
+4. Run `go test ./...` when shared APIs, wiring, middleware, or infrastructure behavior changes.
+5. Run `go vet ./...` or the repository linter when available and proportionate to the change.
+6. Inspect `git diff` to ensure generated output and configuration changes are intentional.
 
-### Adding Middleware
-
-```go
-http.Middleware(
-    recovery.Recovery(),           // 1. Catch panics first
-    validate.Validator(),          // 2. Validate requests
-    jwt.Server(keyFunc),           // 3. Authentication
-    ratelimit.Server(limiter),     // 4. Rate limiting
-    logging.Server(logger),        // 5. Logging
-)
-```
-
-**Details**: [references/middleware-patterns.md](references/middleware-patterns.md)
-
-### Configuring Service Discovery
-
-```go
-// Server-side
-reg := etcd.New(client)
-app := kratos.New(kratos.Registrar(reg))
-
-// Client-side
-dis := etcd.New(client)
-conn, _ := grpc.DialInsecure(
-    context.Background(),
-    grpc.WithEndpoint("discovery:///service-name"),
-    grpc.WithDiscovery(dis),
-)
-```
-
-**Details**: [references/registry-patterns.md](references/registry-patterns.md)
-
-## ⚡ Key Principles
-
-### ✅ Always Follow
-
-- **Layer separation**: Service (API) → Biz (Business) → Data (Persistence)
-- **Dependency Inversion**: Interfaces in biz, implementations in data
-- **Protobuf-first**: Define APIs and errors in `.proto` files
-- **Wire injection**: Compile-time DI, no global state
-- **Context propagation**: Pass `ctx context.Context` through all layers
-- **Interface-based design**: Program to interfaces, not implementations
-- **Error codes**: Structured errors with code, reason, message, metadata
-
-### ❌ Never Do
-
-- Put business logic in service handlers (violates layered architecture)
-- Skip interface definition and use concrete types directly
-- Use global variables for dependencies
-- Define HTTP handlers manually (use generated code from proto)
-- Hard-code configuration values
-- Skip validation or forget to check `err != nil`
-- Modify generated `.pb.go` files
-
-## 📖 Progressive Learning Path
-
-### 🟢 New to kratos?
-1. [Official Quick Start](https://go-kratos.dev/docs/getting-started/start) - Install CLI, create first project
-2. [references/architecture-patterns.md](references/architecture-patterns.md) - Understand Service → Biz → Data
-3. [references/api-patterns.md](references/api-patterns.md) - Learn Protobuf API definition
-
-### 🟡 Building production services?
-1. [best-practices/overview.md](best-practices/overview.md) - Production checklist
-2. [references/circuit-breaker-patterns.md](references/circuit-breaker-patterns.md) + [references/ratelimit-patterns.md](references/ratelimit-patterns.md) - Add resilience
-3. [references/registry-patterns.md](references/registry-patterns.md) - Service discovery
-4. [troubleshooting/common-issues.md](troubleshooting/common-issues.md) - Avoid pitfalls
-
-### 🔵 Extending capabilities?
-1. [getting-started/claude-code-guide.md](getting-started/claude-code-guide.md) - Advanced Claude Code features
-2. [Kratos Examples](https://github.com/go-kratos/examples) - Example projects
-
-## 🔗 Kratos Ecosystem
-
-| Project | Purpose |
-|---------|---------|
-| [kratos](https://github.com/go-kratos/kratos) | Framework core, CLI tools |
-| [kratos-layout](https://github.com/go-kratos/kratos-layout) | Official project template |
-| [contrib](https://github.com/go-kratos/kratos/tree/main/contrib) | Plugins for config, registry, log, metrics |
-| [aegis](https://github.com/go-kratos/aegis) | Availability algorithms |
-| [gateway](https://github.com/go-kratos/gateway) | API Gateway |
-| [examples](https://github.com/go-kratos/examples) | Example code |
-
-## 📝 Version Compatibility
-
-- **Target version**: kratos v2.0.0+
-- **Go version**: Go 1.19 or later recommended
-- **Protoc**: 3.0+
-
----
-
-**Quick invocation**: Use `/kratos-skills` or ask "How do I [task] with kratos?"
+If a required generator, service, or dependency is unavailable, report exactly what could not be verified and provide the command that should be run in the configured environment.
