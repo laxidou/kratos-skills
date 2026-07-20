@@ -49,7 +49,7 @@ Read [architecture patterns](../references/architecture-patterns.md).
 
 ## Context, data, and transactions
 
-- Propagate the incoming context through use cases, repositories, and outbound clients.
+- Apply the [architecture cross-cutting-boundary checks](../references/architecture-patterns.md#handle-cross-cutting-boundaries) to every affected call path.
 - Set explicit outbound timeouts and preserve caller cancellation.
 - Bound connection pools, queues, batches, and concurrency.
 - Define transaction ownership at the use-case boundary and guarantee rollback on every error path.

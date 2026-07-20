@@ -151,4 +151,4 @@ Remove temporary high-cardinality or sensitive diagnostics after the cause is ve
 
 ## Completion criterion
 
-Diagnosis is complete when the failing path is reproduced or conclusively traced, the first causal fault is identified with evidence, proposed changes address that fault, and every unverified hypothesis has an explicit command or environment requirement.
+This reference is fully applied when the repository baseline is recorded, the checklist for the observed symptom class is exhausted, and temporary high-cardinality or sensitive diagnostics are removed after use.

@@ -48,7 +48,3 @@ Remove legacy code, fields, schema, configuration, dependencies, feature flags, 
 - the target path has passed its soak or stability window;
 - rollback no longer depends on the legacy artifact, or a replacement recovery path exists; and
 - repository checks and deployment verification pass without the legacy path.
-
-## Verification
-
-Complete migration work only when the boundary ledger accounts for every caller and artifact, every deployable phase has entry, verification, rollback, and exit conditions, compatibility checks cover mixed states, observability can detect unsafe progress, and each legacy removal is supported by evidence.
