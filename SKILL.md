@@ -1,102 +1,87 @@
 ---
 name: kratos-skills
-description: Build, review, debug, and modernize Go microservices based on go-kratos v2. Use when Codex works on Kratos projects involving Protobuf HTTP/gRPC APIs, Service-Biz-Data layering, Wire dependency injection, configuration, middleware, validation, structured errors, registry and discovery, resilience, observability, Ent, CLI or code generation, production hardening, or Kratos-specific troubleshooting.
+description: Go-Kratos v2 repository engineering for implementation, staged migration, causal debugging, and code review. Use for Kratos services, Protobuf HTTP/gRPC contracts, Service-Biz-Data or Wire boundaries, generated code, middleware, infrastructure, persistence, observability, resilience, and production-readiness work.
 ---
 
-# Go-Kratos Engineering
+# Go-Kratos v2 Engineering
 
-Use the repository as the source of truth, then apply the Kratos patterns in this skill selectively.
+Work repository-first and version-locked.
 
-## Work From the Codebase
+## 1. Reconnaissance
 
-1. Inspect `go.mod`, `Makefile`, `buf.yaml`, `buf.gen.yaml`, API protos, `cmd/`, and `internal/` before proposing changes.
-2. Identify the exact Kratos, Go, Protobuf, Wire, validation, and contrib package versions already in use.
-3. Follow the project's existing generation commands, provider-set structure, naming, and error conventions.
-4. Load only the reference files required for the current task.
-5. Implement the smallest coherent change across API, service, biz, data, configuration, and wiring boundaries.
-6. Regenerate derived code and run focused tests; broaden verification when shared contracts or infrastructure change.
+1. Inspect `go.mod`, generation targets, Buf configuration, API protos, `cmd/`, and affected `internal/` packages.
+2. Identify the exact Go, Kratos, contrib, Protobuf, validation, Wire, persistence, and observability versions involved.
+3. Map the request, dependency, or failure path across API, service, biz, data, configuration, wiring, generated output, and tests; mark each boundary affected or ruled out.
+4. Read [references/compatibility.md](references/compatibility.md) before applying version-sensitive examples.
+5. Select the narrowest task references from the routing table and read each selected file completely.
 
-Do not copy commands or APIs from a reference blindly. Reconcile every example with the versions and conventions found in the target repository.
+Complete reconnaissance only when the installed versions and repository-owned commands are recorded, constraining local conventions are identified, and each relevant boundary is marked affected or ruled out with repository evidence.
 
-## Preserve Kratos Boundaries
+## 2. Choose the Branch
 
-- Keep transport adaptation in `internal/service`; translate generated request and response types there.
-- Keep business rules and repository interfaces in `internal/biz`.
-- Keep persistence and external-system implementations in `internal/data`.
-- Compose dependencies with Wire provider sets; avoid globals and service locators.
-- Define public APIs, validation rules, and structured error contracts in Protobuf when the project does so already.
-- Propagate `context.Context`, deadlines, metadata, and tracing through every layer and outbound call.
-- Treat generated `.pb.go`, HTTP, gRPC, error, validation, and `wire_gen.go` files as derived output. Change their source definitions instead of editing generated files.
+Choose one branch: Implement for a direct modification, Migrate for a staged transition between contracts or technologies, Debug for causal diagnosis, or Review for a read-only assessment. Debug may transition into Implement or Migrate only when the request authorizes a fix.
 
-Adapt these defaults when the repository intentionally uses a different architecture. Preserve local consistency unless the user explicitly requests a migration.
+### Implement
+
+1. Preserve the repository's intentional architecture and naming.
+2. Keep transport adaptation in `internal/service`, business rules and repository contracts in `internal/biz`, and infrastructure implementations in `internal/data` when the project follows the standard layout.
+3. Propagate context, deadlines, metadata, and trace state across every changed call boundary.
+4. Change source definitions for generated output, update constructors and Wire providers, then regenerate through repository-owned targets.
+5. Run focused tests, broaden verification when contracts or shared infrastructure change, and inspect the final diff.
+
+Complete implementation only when every affected boundary is modified or explicitly ruled out, generated outputs match their sources, providers agree, required checks pass, and the diff is intentional. Report each unavailable check with its exact command and blocking dependency.
+
+### Migrate
+
+1. Record the current and target states, compatibility constraints, and affected callers, data, configuration, dependencies, generated artifacts, and deployment boundaries.
+2. Read [references/migration-patterns.md](references/migration-patterns.md), [references/compatibility.md](references/compatibility.md), and every affected subsystem reference completely.
+3. Implement and verify the ordered transition through repository-owned commands, preserving an operable and observable state at every deployable phase.
+
+Complete migration only when every caller, data shape, generated artifact, configuration key, and deployment phase is accounted for; each intermediate state is deployable; compatibility checks pass; rollback is explicit; and legacy removal gates are satisfied or reported as remaining work.
+
+### Debug
+
+1. Reproduce the failure or trace it to the first causal fault.
+2. Test competing hypotheses with the narrowest commands and runtime evidence.
+3. Report the cause, affected path, and evidence before proposing architectural changes.
+4. Apply a fix only when the request authorizes changes; then use the Implement or Migrate branch for the fix and verification.
+
+Complete diagnosis only when the first causal fault is evidenced and every remaining hypothesis names the command or environment requirement needed to resolve it.
+
+### Review
+
+1. Keep review-only work read-only.
+2. Inspect the requested scope and affected boundaries for correctness, contract compatibility, layer boundaries, error translation, cancellation, security, observability, generated output, and tests.
+3. Load [best-practices/overview.md](best-practices/overview.md) for broad production-readiness reviews and add subsystem references only for code actually present.
+4. Report every material finding with concrete files and lines, ordered by severity.
+
+Complete review only when every material issue is reported or the result explicitly states that no material findings remain, and every verification gap names the command required to close it.
 
 ## Route to References
 
-Select the narrowest useful row. Read each selected file completely before implementing its patterns.
-
 | Task | Read |
 | --- | --- |
-| Create or reshape a service, use case, repository, or Wire graph | [references/architecture-patterns.md](references/architecture-patterns.md) |
-| Define Protobuf APIs or HTTP mappings | [references/api-patterns.md](references/api-patterns.md) |
-| Configure HTTP/gRPC servers or clients | [references/transport-patterns.md](references/transport-patterns.md) |
-| Use Kratos CLI or project generators | [references/cli-guide.md](references/cli-guide.md) |
-| Define and propagate structured errors | [references/error-patterns.md](references/error-patterns.md) |
-| Add Protovalidate or migrate validation | [references/validate-patterns.md](references/validate-patterns.md) |
-| Add middleware or reason about middleware order | [references/middleware-patterns.md](references/middleware-patterns.md) |
-| Add JWT authentication or authorization context | [references/auth-patterns.md](references/auth-patterns.md) |
-| Configure files, environment variables, or config centers | [references/config-patterns.md](references/config-patterns.md) |
-| Add registry, discovery, or client-side balancing | [references/registry-patterns.md](references/registry-patterns.md), [references/selector-patterns.md](references/selector-patterns.md) |
-| Add circuit breaking, rate limiting, or panic recovery | [references/circuit-breaker-patterns.md](references/circuit-breaker-patterns.md), [references/ratelimit-patterns.md](references/ratelimit-patterns.md), [references/recovery-patterns.md](references/recovery-patterns.md) |
-| Add logs, metrics, traces, or propagated metadata | [references/logging-patterns.md](references/logging-patterns.md), [references/metrics-patterns.md](references/metrics-patterns.md), [references/tracing-patterns.md](references/tracing-patterns.md), [references/metadata-patterns.md](references/metadata-patterns.md) |
-| Integrate Ent or implement Ent repositories and transactions | [references/ent-patterns.md](references/ent-patterns.md) |
-| Customize serialization or content negotiation | [references/encoding-patterns.md](references/encoding-patterns.md) |
-| Generate or serve OpenAPI documentation | [references/openapi-guide.md](references/openapi-guide.md) |
-| Diagnose installation, generation, Wire, build, runtime, database, or discovery failures | [troubleshooting/common-issues.md](troubleshooting/common-issues.md) plus the relevant topic reference |
-| Perform a broad production-readiness or code-quality review | [best-practices/overview.md](best-practices/overview.md) plus references for the affected subsystems |
-| Configure or invoke this skill from Claude Code | [getting-started/claude-code-guide.md](getting-started/claude-code-guide.md) |
-
-For broad requests, start with architecture or best practices and add subsystem references only when the code under inspection requires them. Do not load the entire knowledge base at once.
-
-## Apply Task-Specific Checks
-
-### API and Generation
-
-- Confirm `go_package`, package versioning, HTTP annotations, request bodies, path parameters, and generated targets.
-- Preserve backward compatibility unless the user approves a breaking contract change.
-- Use repository-owned Make or Buf targets when available instead of inventing a parallel generation command.
-- Include regenerated outputs only when the repository tracks them.
-
-### Layered Implementation
-
-- Keep service methods thin and delegate orchestration to use cases.
-- Define repository behavior from business needs, not storage technology.
-- Map storage and transport errors into the project's domain error model at the appropriate boundary.
-- Update Wire providers whenever constructor dependencies or implementations change.
-
-### Infrastructure and Reliability
-
-- Set explicit timeouts for outbound calls and preserve cancellation.
-- Apply middleware on the correct client or server side and verify ordering from actual behavior.
-- Avoid retrying non-idempotent work without an idempotency strategy.
-- Bound retries, rate limits, circuit breakers, connection pools, and queues with observable failure behavior.
-- Avoid logging secrets, credentials, tokens, or full sensitive request payloads.
-
-### Review and Debugging
-
-- Reproduce or trace the failing path before changing architecture.
-- Check generated-code drift, missing tools, stale Wire graphs, configuration source precedence, discovery endpoints, and context deadlines.
-- In reviews, prioritize correctness, contract compatibility, layer violations, error handling, cancellation, security, observability, and missing tests.
-- Cite concrete files and lines when reporting findings.
-
-## Verify Changes
-
-Prefer commands already defined by the project. A typical verification sequence is:
-
-1. Run the relevant Proto, config, error, Ent, or Wire generation target.
-2. Run `gofmt` on handwritten Go files.
-3. Run focused package tests for the changed layers.
-4. Run `go test ./...` when shared APIs, wiring, middleware, or infrastructure behavior changes.
-5. Run `go vet ./...` or the repository linter when available and proportionate to the change.
-6. Inspect `git diff` to ensure generated output and configuration changes are intentional.
-
-If a required generator, service, or dependency is unavailable, report exactly what could not be verified and provide the command that should be run in the configured environment.
+| Baseline maintenance or dependency upgrades | [references/compatibility.md](references/compatibility.md) |
+| Cross-version, contract, storage, or infrastructure migration | [references/migration-patterns.md](references/migration-patterns.md), [references/compatibility.md](references/compatibility.md), plus every affected subsystem reference |
+| Service-Biz-Data boundaries, repositories, use cases, or Wire | [references/architecture-patterns.md](references/architecture-patterns.md) |
+| Protobuf APIs and HTTP mappings | [references/api-patterns.md](references/api-patterns.md) |
+| HTTP or gRPC servers and clients | [references/transport-patterns.md](references/transport-patterns.md) |
+| Kratos CLI and generation commands | [references/cli-guide.md](references/cli-guide.md) |
+| Structured errors and boundary mapping | [references/error-patterns.md](references/error-patterns.md) |
+| Protovalidate or PGV migration | [references/validate-patterns.md](references/validate-patterns.md) |
+| Middleware composition or order | [references/middleware-patterns.md](references/middleware-patterns.md) |
+| JWT authentication and operation protection | [references/auth-patterns.md](references/auth-patterns.md) |
+| Configuration sources and precedence | [references/config-patterns.md](references/config-patterns.md) |
+| Registry and discovery | [references/registry-patterns.md](references/registry-patterns.md) |
+| Client balancing and node filters | [references/selector-patterns.md](references/selector-patterns.md) |
+| Circuit breaking | [references/circuit-breaker-patterns.md](references/circuit-breaker-patterns.md) |
+| Rate limiting and overload protection | [references/ratelimit-patterns.md](references/ratelimit-patterns.md) |
+| Panic recovery | [references/recovery-patterns.md](references/recovery-patterns.md) |
+| Structured logging | [references/logging-patterns.md](references/logging-patterns.md) |
+| OpenTelemetry metrics and Prometheus export | [references/metrics-patterns.md](references/metrics-patterns.md) |
+| OpenTelemetry tracing | [references/tracing-patterns.md](references/tracing-patterns.md) |
+| Kratos metadata propagation | [references/metadata-patterns.md](references/metadata-patterns.md) |
+| Ent repositories and transactions | [references/ent-patterns.md](references/ent-patterns.md) |
+| Serialization and content negotiation | [references/encoding-patterns.md](references/encoding-patterns.md) |
+| OpenAPI generation and serving | [references/openapi-guide.md](references/openapi-guide.md) |
+| Installation, generation, Wire, runtime, database, or discovery diagnosis | [troubleshooting/common-issues.md](troubleshooting/common-issues.md) plus the affected subsystem reference |
